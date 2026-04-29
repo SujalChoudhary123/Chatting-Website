@@ -23,6 +23,10 @@ export const config = {
   maxFileSizeMb: Number(process.env.MAX_FILE_SIZE_MB ?? 10),
   messageHistoryLimit: Number(process.env.MESSAGE_HISTORY_LIMIT ?? 100),
   mongodbUri: process.env.MONGODB_URI ?? "mongodb://127.0.0.1:27017/pulsechat",
+  mongodbDnsServers: String(process.env.MONGODB_DNS_SERVERS ?? "8.8.8.8,1.1.1.1")
+    .split(",")
+    .map((value) => value.trim())
+    .filter(Boolean),
   jwtSecret: process.env.JWT_SECRET ?? "change-this-in-production",
   otpTtlMinutes: Number(process.env.OTP_TTL_MINUTES ?? 5),
   exposeDevOtp: process.env.EXPOSE_DEV_OTP !== "false",

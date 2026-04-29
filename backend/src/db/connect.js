@@ -1,3 +1,4 @@
+import dns from "dns";
 import mongoose from "mongoose";
 import { config } from "../config.js";
 import { User } from "../models/User.js";
@@ -28,6 +29,11 @@ async function migrateUserIndexes() {
 }
 
 export async function connectToDatabase() {
+  if (config.mongodbUri.startsWith("mongodb+srv://") && config.mongodbDnsServers.length > 0) {
+    // Some local networks fail Atlas SRV lookups with the default resolver.
+    dns.setServers(config.mongodbDnsServers);
+  }
+
   await mongoose.connect(config.mongodbUri);
   await migrateUserIndexes();
 }
