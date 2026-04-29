@@ -36,7 +36,7 @@ services:
     plan: free
     rootDir: frontend
     buildCommand: npm install && npm run build:node
-    staticPublishPath: ./frontend/dist
+    staticPublishPath: ./dist
     autoDeployTrigger: commit
     routes:
       - type: rewrite
