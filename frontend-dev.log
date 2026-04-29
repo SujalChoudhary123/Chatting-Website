@@ -1,0 +1,102 @@
+
+> pulsechat-frontend@1.0.0 dev
+> vite --host 127.0.0.1
+
+
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m337[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://127.0.0.1:[1m5173[22m/[39m
+[2m[32m  ➜[39m[22m[2m  press [22m[1mh + enter[22m[2m to show help[22m
+[2m8:12:07 pm[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/main.jsx[22m
+[2m8:13:09 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.jsx[22m
+[2m8:19:56 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CallOverlay.jsx[22m
+[2m8:20:51 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.jsx[22m
+[2m8:21:12 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.jsx[22m
+[2m8:21:12 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css[22m
+[2m8:27:43 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/MessageList.jsx[22m
+[2m8:27:43 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.jsx[22m
+[2m8:30:17 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/MessageList.jsx[22m
+[2m8:30:17 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.jsx[22m
+[2m8:36:43 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/Sidebar.jsx[22m
+[2m8:36:43 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/ChatHeader.jsx[22m
+[2m8:36:43 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.jsx[22m
+[2m8:36:43 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css[22m
+[2m8:44:20 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.jsx[22m
+[2m8:44:20 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/ChatHeader.jsx[22m
+[2m8:44:20 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css[22m
+[2m9:46:23 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/ChatHeader.jsx[22m
+[2m9:46:23 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.jsx[22m
+[2m9:46:23 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css[22m
+[2m9:50:34 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/DetailsPanel.jsx[22m
+[2m9:50:34 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/StarredPanel.jsx[22m
+[2m9:50:34 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.jsx[22m
+[2m9:50:34 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css[22m
+[2m9:53:05 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/ChatHeader.jsx[22m
+[2m9:53:06 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.jsx[22m
+[2m9:53:06 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css[22m
+[2m10:00:33 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/InboxPanel.jsx[22m
+[2m10:00:33 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.jsx[22m
+[2m10:00:33 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css[22m
+[2m10:03:30 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/InboxPanel.jsx[22m
+[2m10:03:30 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css[22m
+[2m10:10:11 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/InboxPanel.jsx[22m
+[2m10:10:11 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.jsx[22m
+[2m10:10:11 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/DetailsPanel.jsx[22m
+[2m10:10:11 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css[22m
+[2m10:12:30 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.jsx[22m
+[2m10:22:15 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/MessageList.jsx[22m
+[2m10:22:34 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css[22m
+[2m10:22:40 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css[22m
+[2m10:26:50 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css[22m
+[2m10:28:41 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/MessageList.jsx[22m
+[2m10:28:51 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css[22m
+[2m10:31:48 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css[22m
+[2m10:36:00 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css[22m
+[2m10:36:45 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css[22m
+[2m10:38:14 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/MessageList.jsx[22m
+[2m10:44:59 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/ChatHeader.jsx[22m
+[2m10:45:04 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css[22m
+[2m10:48:18 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/ChatHeader.jsx[22m
+[2m10:48:35 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css[22m
+[2m10:50:13 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/ChatHeader.jsx[22m
+[2m10:50:17 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css[22m
+[2m10:51:03 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/ChatHeader.jsx[22m
+[2m10:52:48 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/ChatHeader.jsx[22m
+[2m10:53:40 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css[22m
+[2m10:53:54 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css[22m
+[2m10:55:12 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css[22m
+[2m10:57:09 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/ChatHeader.jsx[22m
+[2m10:58:56 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css[22m
+[2m11:00:33 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css[22m
+[2m11:01:59 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css[22m
+[2m11:04:20 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css[22m
+[2m11:06:08 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css[22m
+[2m11:09:35 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/ChatHeader.jsx[22m
+[2m11:09:47 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css[22m
+[2m11:11:19 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css[22m
+[2m11:13:38 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/MessageList.jsx[22m
+[2m11:16:04 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css[22m
+[2m11:16:12 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css[22m
+[2m11:18:24 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/Sidebar.jsx[22m
+[2m11:18:33 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css[22m
+[2m11:25:32 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.jsx[22m
+[2m11:25:44 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/JoinOverlay.jsx[22m
+[2m11:25:51 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.jsx[22m
+[2m11:25:57 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/Sidebar.jsx[22m
+[2m11:26:03 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/SettingsPanel.jsx[22m
+[2m11:28:25 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/JoinOverlay.jsx[22m
+[2m11:32:16 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.jsx[22m
+[2m11:32:33 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.jsx[22m
+[2m11:32:54 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/JoinOverlay.jsx[22m
+[2m11:33:31 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.jsx[22m
+[2m11:39:29 pm[22m [36m[1m[vite][22m[39m [32m.env changed, restarting server...[39m
+[2m11:39:29 pm[22m [36m[1m[vite][22m[39m server restarted.
+[2m11:40:25 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.jsx[22m
+[2m12:32:27 am[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.jsx[22m
+[2m12:32:37 am[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.jsx[22m
+[2m12:36:00 am[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CallOverlay.jsx[22m
+[2m12:36:47 am[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css[22m
+[2m12:37:00 am[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css[22m
+[2m12:40:16 am[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.jsx[22m
+[2m12:44:07 am[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.jsx[22m
+^C^C

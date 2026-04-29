@@ -1,0 +1,26 @@
+{
+  "name": "pulsechat-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "dev:node": "vite --mode node",
+    "dev:cpp": "vite --mode cpp",
+    "dev:java": "vite --mode java",
+    "build": "vite build",
+    "build:node": "vite build --mode node",
+    "build:cpp": "vite build --mode cpp",
+    "build:java": "vite build --mode java",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "socket.io-client": "^4.8.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^5.4.12"
+  }
+}

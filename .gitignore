@@ -1,0 +1,6 @@
+node_modules/
+dist/
+.env
+backend/uploads/
+frontend/dist/
+backend-java/data/

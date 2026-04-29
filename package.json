@@ -1,0 +1,31 @@
+{
+  "name": "pulsechat",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Real-time chat application with Socket.IO, rooms, presence, typing indicators, and file sharing.",
+  "scripts": {
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:backend:node": "npm --prefix backend run dev",
+    "dev:backend:java": "java backend-java/src/PulseChatJavaServer.java",
+    "build:backend:cpp": "powershell -NoProfile -Command \"New-Item -ItemType Directory -Force backend-cpp\\out | Out-Null; New-Item -ItemType Directory -Force backend-cpp\\data | Out-Null; g++ -std=gnu++17 -O2 -o backend-cpp\\out\\PulseChatCppServer.exe backend-cpp\\src\\PulseChatCppServer.cpp -lws2_32\"",
+    "dev:backend:cpp": "npm run build:backend:cpp && backend-cpp\\out\\PulseChatCppServer.exe",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev:frontend:node": "npm --prefix frontend run dev:node",
+    "dev:frontend:java": "npm --prefix frontend run dev:java",
+    "dev:frontend:cpp": "npm --prefix frontend run dev:cpp",
+    "start:backend": "npm --prefix backend run start",
+    "start:backend:node": "npm --prefix backend run start",
+    "start:backend:java": "java backend-java/src/PulseChatJavaServer.java",
+    "start:backend:cpp": "backend-cpp\\out\\PulseChatCppServer.exe",
+    "build:frontend": "npm --prefix frontend run build",
+    "build:frontend:node": "npm --prefix frontend run build:node",
+    "build:frontend:java": "npm --prefix frontend run build:java",
+    "build:frontend:cpp": "npm --prefix frontend run build:cpp"
+  },
+  "dependencies": {
+    "dotenv": "^17.3.1",
+    "mongodb": "^7.1.1",
+    "mongoose": "^9.3.3",
+    "nodemailer": "^8.0.4"
+  }
+}

@@ -1,0 +1,5 @@
+
+> pulsechat-backend@1.0.0 start
+> node src/server.js
+
+Port 4100 is already in use. Update PORT in backend/src/.env or stop the process using that port.
