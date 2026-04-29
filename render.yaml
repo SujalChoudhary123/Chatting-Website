@@ -1,0 +1,52 @@
+services:
+  - name: pulsechat-backend
+    type: web
+    runtime: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeployTrigger: commit
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: CLIENT_URL
+        fromService:
+          name: pulsechat-frontend
+          type: web
+          envVarKey: RENDER_EXTERNAL_URL
+      - key: CLIENT_URLS
+        fromService:
+          name: pulsechat-frontend
+          type: web
+          envVarKey: RENDER_EXTERNAL_URL
+      - key: SMTP_ENABLED
+        value: "false"
+      - key: EXPOSE_DEV_OTP
+        value: "true"
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+
+  - name: pulsechat-frontend
+    type: web
+    runtime: static
+    plan: free
+    rootDir: frontend
+    buildCommand: npm install && npm run build:node
+    staticPublishPath: ./frontend/dist
+    autoDeployTrigger: commit
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_BACKEND_RUNTIME
+        value: node
+      - key: VITE_API_URL
+        fromService:
+          name: pulsechat-backend
+          type: web
+          envVarKey: RENDER_EXTERNAL_URL

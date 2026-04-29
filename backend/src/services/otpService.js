@@ -12,7 +12,8 @@ function hashOtp(otp) {
 
 function isEmailProviderConfigured() {
   return Boolean(
-    config.smtpHost &&
+    config.smtpEnabled &&
+      config.smtpHost &&
       config.smtpPort &&
       config.smtpUser &&
       config.smtpPass &&

@@ -1,6 +1,10 @@
 node_modules/
 dist/
 .env
+backend/.env
+backend/src/.env
+frontend/.env.local
+frontend/.env.production.local
 backend/uploads/
 frontend/dist/
 backend-java/data/

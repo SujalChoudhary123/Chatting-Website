@@ -17,9 +17,35 @@ for (const envPath of envCandidates) {
 
 dotenv.config({ override: false });
 
+function normalizeOrigin(value) {
+  const trimmedValue = String(value ?? "").trim();
+
+  if (!trimmedValue) {
+    return "";
+  }
+
+  const withProtocol = /^https?:\/\//i.test(trimmedValue)
+    ? trimmedValue
+    : `https://${trimmedValue}`;
+
+  try {
+    return new URL(withProtocol).origin;
+  } catch {
+    return "";
+  }
+}
+
+const configuredClientOrigins = [
+  process.env.CLIENT_URL,
+  ...(process.env.CLIENT_URLS ?? "").split(","),
+]
+  .map(normalizeOrigin)
+  .filter(Boolean);
+
 export const config = {
   port: Number(process.env.PORT ?? 4000),
-  clientUrl: process.env.CLIENT_URL ?? "http://localhost:5173",
+  clientUrl: configuredClientOrigins[0] ?? "http://localhost:5173",
+  clientUrls: configuredClientOrigins,
   maxFileSizeMb: Number(process.env.MAX_FILE_SIZE_MB ?? 10),
   messageHistoryLimit: Number(process.env.MESSAGE_HISTORY_LIMIT ?? 100),
   mongodbUri: process.env.MONGODB_URI ?? "mongodb://127.0.0.1:27017/pulsechat",
@@ -30,6 +56,7 @@ export const config = {
   jwtSecret: process.env.JWT_SECRET ?? "change-this-in-production",
   otpTtlMinutes: Number(process.env.OTP_TTL_MINUTES ?? 5),
   exposeDevOtp: process.env.EXPOSE_DEV_OTP !== "false",
+  smtpEnabled: process.env.SMTP_ENABLED !== "false",
   smtpHost: process.env.SMTP_HOST ?? "",
   smtpPort: Number(process.env.SMTP_PORT ?? 587),
   smtpSecure: process.env.SMTP_SECURE === "true",

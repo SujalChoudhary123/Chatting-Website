@@ -40,7 +40,7 @@ const presenceStore = createPresenceStore();
 const app = express();
 const httpServer = createServer(app);
 const allowedOrigins = new Set([
-  config.clientUrl,
+  ...config.clientUrls,
   "http://localhost:5173",
   "http://127.0.0.1:5173",
   "https://localhost:5173",
@@ -77,6 +77,7 @@ const upload = multer({
   },
 });
 
+app.set("trust proxy", 1);
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use("/uploads", express.static(uploadsDir));
