@@ -1,8 +1,8 @@
 # Free Deployment
 
-This repo is now prepared for a fully free deployment path:
+This repo is now prepared for a fully free deployment path with:
 
-- Frontend: Render Static Site
+- Frontend: Vercel
 - Backend: Render Web Service
 - Database: MongoDB Atlas Free
 
@@ -14,21 +14,23 @@ This repo is now prepared for a fully free deployment path:
 
 ## Render Blueprint
 
-This repo includes `render.yaml`, so you can deploy both services from Render with a Blueprint.
+This repo includes `render.yaml`, so you can deploy only the backend from Render with a Blueprint.
 
 What it does:
 
 - deploys `backend/` as a free Node web service
-- deploys `frontend/` as a free static site
-- connects the frontend `VITE_API_URL` to the backend Render URL
-- connects backend `CLIENT_URL` to the frontend Render URL
+- leaves the frontend on Vercel
 - disables SMTP so signup uses the built-in dev OTP instead of paid email
 
 ## Required Secret
 
-After creating the Blueprint, set this backend secret in Render:
+After creating the Blueprint, set these backend values in Render:
 
+- `CLIENT_URL`
+- `CLIENT_URLS`
 - `MONGODB_URI`
+
+Set `CLIENT_URL` and `CLIENT_URLS` to your Vercel frontend URL.
 
 Recommended Atlas format:
 
@@ -50,12 +52,8 @@ If Blueprint variable linking fails in your workspace, set these values manually
 Backend:
 
 - `CLIENT_URL=https://your-frontend-name.onrender.com`
-- `CLIENT_URLS=https://your-frontend-name.onrender.com`
+- `CLIENT_URLS=https://your-vercel-app.vercel.app`
 - `SMTP_ENABLED=false`
 - `EXPOSE_DEV_OTP=true`
+- `MONGODB_DNS_SERVERS=8.8.8.8,1.1.1.1`
 - `MONGODB_URI=...`
-
-Frontend:
-
-- `VITE_BACKEND_RUNTIME=node`
-- `VITE_API_URL=https://your-backend-name.onrender.com`
