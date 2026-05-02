@@ -35,17 +35,57 @@ function normalizeOrigin(value) {
   }
 }
 
-const configuredClientOrigins = [
+function escapeRegex(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function normalizeOriginPattern(value) {
+  const trimmedValue = String(value ?? "").trim();
+
+  if (!trimmedValue || !trimmedValue.includes("*")) {
+    return null;
+  }
+
+  const withProtocol = /^https?:\/\//i.test(trimmedValue)
+    ? trimmedValue
+    : `https://${trimmedValue}`;
+  const match = withProtocol.match(/^(https?):\/\/([^/]+)/i);
+
+  if (!match) {
+    return null;
+  }
+
+  const protocol = match[1].toLowerCase();
+  const host = match[2].toLowerCase();
+  const source = `^${protocol}:\\/\\/${escapeRegex(host).replace(/\\\*/g, ".*")}$`;
+
+  try {
+    return new RegExp(source, "i");
+  } catch {
+    return null;
+  }
+}
+
+const configuredClientEntries = [
   process.env.CLIENT_URL,
   ...(process.env.CLIENT_URLS ?? "").split(","),
-]
+].map((value) => String(value ?? "").trim()).filter(Boolean);
+
+const configuredClientOrigins = configuredClientEntries
+  .filter((value) => !value.includes("*"))
   .map(normalizeOrigin)
+  .filter(Boolean);
+
+const configuredClientOriginPatterns = configuredClientEntries
+  .filter((value) => value.includes("*"))
+  .map(normalizeOriginPattern)
   .filter(Boolean);
 
 export const config = {
   port: Number(process.env.PORT ?? 4000),
   clientUrl: configuredClientOrigins[0] ?? "http://localhost:5173",
   clientUrls: configuredClientOrigins,
+  clientOriginPatterns: configuredClientOriginPatterns,
   maxFileSizeMb: Number(process.env.MAX_FILE_SIZE_MB ?? 10),
   messageHistoryLimit: Number(process.env.MESSAGE_HISTORY_LIMIT ?? 100),
   mongodbUri: process.env.MONGODB_URI ?? "mongodb://127.0.0.1:27017/pulsechat",

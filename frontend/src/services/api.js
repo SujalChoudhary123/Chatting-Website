@@ -5,6 +5,24 @@ function isLikelyFrontendHtmlResponse(response) {
   return !response.ok && contentType.includes("text/html");
 }
 
+function isLikelySameOriginPlatform404(response, candidate) {
+  if (typeof window === "undefined" || response.ok || response.status !== 404) {
+    return false;
+  }
+
+  try {
+    const candidateOrigin = new URL(candidate, window.location.origin).origin;
+    if (candidateOrigin !== window.location.origin) {
+      return false;
+    }
+  } catch {
+    return false;
+  }
+
+  const contentType = String(response.headers.get("content-type") ?? "").toLowerCase();
+  return !contentType.includes("application/json");
+}
+
 async function request(path, { token, headers, ...options } = {}) {
   const requestOptions = {
     ...options,
@@ -25,7 +43,10 @@ async function request(path, { token, headers, ...options } = {}) {
     try {
       const nextResponse = await fetch(`${candidate}${path}`, requestOptions);
 
-      if (isLikelyFrontendHtmlResponse(nextResponse) && candidate !== candidates[candidates.length - 1]) {
+      if (
+        candidate !== candidates[candidates.length - 1] &&
+        (isLikelyFrontendHtmlResponse(nextResponse) || isLikelySameOriginPlatform404(nextResponse, candidate))
+      ) {
         continue;
       }
 

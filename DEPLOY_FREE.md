@@ -42,7 +42,7 @@ Example Render backend values:
 
 ```env
 CLIENT_URL=https://your-vercel-app.vercel.app
-CLIENT_URLS=https://your-vercel-app.vercel.app,https://your-custom-domain.com
+CLIENT_URLS=https://your-vercel-app.vercel.app,https://your-custom-domain.com,https://your-vercel-preview-*.vercel.app
 SMTP_ENABLED=false
 EXPOSE_DEV_OTP=true
 MONGODB_DNS_SERVERS=8.8.8.8,1.1.1.1
@@ -74,7 +74,7 @@ If Blueprint variable linking fails in your workspace, set these values manually
 Backend:
 
 - `CLIENT_URL=https://your-vercel-app.vercel.app`
-- `CLIENT_URLS=https://your-vercel-app.vercel.app,https://your-custom-domain.com`
+- `CLIENT_URLS=https://your-vercel-app.vercel.app,https://your-custom-domain.com,https://your-vercel-preview-*.vercel.app`
 - `SMTP_ENABLED=false`
 - `EXPOSE_DEV_OTP=true`
 - `MONGODB_DNS_SERVERS=8.8.8.8,1.1.1.1`

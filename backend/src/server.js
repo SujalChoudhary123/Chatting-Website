@@ -46,10 +46,15 @@ const allowedOrigins = new Set([
   "https://localhost:5173",
   "https://127.0.0.1:5173",
 ]);
+const allowedOriginPatterns = config.clientOriginPatterns;
 
 const corsOptions = {
   origin(origin, callback) {
-    if (!origin || allowedOrigins.has(origin)) {
+    if (
+      !origin ||
+      allowedOrigins.has(origin) ||
+      allowedOriginPatterns.some((pattern) => pattern.test(origin))
+    ) {
       return callback(null, true);
     }
 
