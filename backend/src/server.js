@@ -82,6 +82,9 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use("/uploads", express.static(uploadsDir));
 
+const asyncHandler = (handler) => (req, res, next) =>
+  Promise.resolve(handler(req, res, next)).catch(next);
+
 function normalizeEmail(email = "") {
   return String(email).trim().toLowerCase();
 }
@@ -175,16 +178,16 @@ io.use(async (socket, next) => {
   }
 });
 
-app.get("/api/health", async (_req, res) => {
+app.get("/api/health", asyncHandler(async (_req, res) => {
   res.json({
     status: "ok",
     conversations: await mongoose.connection.db.collection("rooms").countDocuments({ type: "direct" }),
     uptime: process.uptime(),
     timestamp: new Date().toISOString(),
   });
-});
+}));
 
-app.post("/api/auth/request-otp", async (req, res) => {
+app.post("/api/auth/request-otp", asyncHandler(async (req, res) => {
   const name = req.body?.name?.trim();
   const email = normalizeEmail(req.body?.email ?? "");
 
@@ -219,9 +222,9 @@ app.post("/api/auth/request-otp", async (req, res) => {
     devOtp: otpResult.devOtp,
     delivery: getOtpMode(),
   });
-});
+}));
 
-app.post("/api/auth/verify-otp", async (req, res) => {
+app.post("/api/auth/verify-otp", asyncHandler(async (req, res) => {
   const email = normalizeEmail(req.body?.email ?? "");
   const otp = String(req.body?.otp ?? "").trim();
 
@@ -255,9 +258,9 @@ app.post("/api/auth/verify-otp", async (req, res) => {
   return res.json({
     signupToken: signSignupToken(user),
   });
-});
+}));
 
-app.post("/api/auth/register", async (req, res) => {
+app.post("/api/auth/register", asyncHandler(async (req, res) => {
   const signupToken = String(req.body?.signupToken ?? "").trim();
   const requestedHandle = String(req.body?.handle ?? "").trim().toLowerCase().replace(/^@+/, "");
   const password = String(req.body?.password ?? "");
@@ -306,9 +309,9 @@ app.post("/api/auth/register", async (req, res) => {
     token: signAuthToken(user),
     user: serializeUser(user),
   });
-});
+}));
 
-app.post("/api/auth/login", async (req, res) => {
+app.post("/api/auth/login", asyncHandler(async (req, res) => {
   const requestedHandle = String(req.body?.handle ?? "").trim().toLowerCase().replace(/^@+/, "");
   const password = String(req.body?.password ?? "");
 
@@ -336,16 +339,16 @@ app.post("/api/auth/login", async (req, res) => {
     token: signAuthToken(user),
     user: serializeUser(user),
   });
-});
+}));
 
-app.get("/api/auth/me", requireAuth, async (req, res) => {
+app.get("/api/auth/me", requireAuth, asyncHandler(async (req, res) => {
   await ensureUserHandle(req.user);
   res.json({
     user: serializeUser(req.user),
   });
-});
+}));
 
-app.post("/api/auth/profile", requireAuth, async (req, res) => {
+app.post("/api/auth/profile", requireAuth, asyncHandler(async (req, res) => {
   const nextName = String(req.body?.name ?? "").trim();
   const requestedHandle = String(req.body?.handle ?? "").trim().toLowerCase().replace(/^@+/, "");
   const avatarUrl = String(req.body?.avatarUrl ?? "").trim();
@@ -379,16 +382,16 @@ app.post("/api/auth/profile", requireAuth, async (req, res) => {
   res.json({
     user: serializeUser(req.user),
   });
-});
+}));
 
-app.get("/api/rooms", requireAuth, async (req, res) => {
+app.get("/api/rooms", requireAuth, asyncHandler(async (req, res) => {
   await ensureUserHandle(req.user);
   res.json({
     rooms: await getSerializedRooms(req.user._id, presenceStore.getOnlineUserIds()),
   });
-});
+}));
 
-app.get("/api/users/search", requireAuth, async (req, res) => {
+app.get("/api/users/search", requireAuth, asyncHandler(async (req, res) => {
   await ensureUserHandle(req.user);
   const query = String(req.query?.q ?? "").trim();
   const users = await searchUsersByHandle({
@@ -399,14 +402,14 @@ app.get("/api/users/search", requireAuth, async (req, res) => {
   res.json({
     users: users.map(serializeSearchedUser),
   });
-});
+}));
 
-app.get("/api/connection-requests", requireAuth, async (req, res) => {
+app.get("/api/connection-requests", requireAuth, asyncHandler(async (req, res) => {
   await ensureUserHandle(req.user);
   return res.json(await getSerializedConnectionRequests(req.user._id));
-});
+}));
 
-app.post("/api/connection-requests", requireAuth, async (req, res) => {
+app.post("/api/connection-requests", requireAuth, asyncHandler(async (req, res) => {
   await ensureUserHandle(req.user);
   const targetHandle = String(req.body?.handle ?? "").trim().toLowerCase().replace(/^@+/, "");
 
@@ -465,9 +468,9 @@ app.post("/api/connection-requests", requireAuth, async (req, res) => {
       user: serializeSearchedUser(targetUser),
     },
   });
-});
+}));
 
-app.post("/api/connection-requests/:requestId/accept", requireAuth, async (req, res) => {
+app.post("/api/connection-requests/:requestId/accept", requireAuth, asyncHandler(async (req, res) => {
   await ensureUserHandle(req.user);
 
   const request = await ConnectionRequest.findOne({
@@ -501,9 +504,9 @@ app.post("/api/connection-requests/:requestId/accept", requireAuth, async (req, 
       roomSlug: request.roomSlug,
     },
   });
-});
+}));
 
-app.get("/api/rooms/:roomId/messages", requireAuth, async (req, res) => {
+app.get("/api/rooms/:roomId/messages", requireAuth, asyncHandler(async (req, res) => {
   const room = await getRoomBySlug(req.params.roomId, req.user._id);
 
   if (!room) {
@@ -523,9 +526,9 @@ app.get("/api/rooms/:roomId/messages", requireAuth, async (req, res) => {
     },
     messages: await getRoomMessages(room.slug, config.messageHistoryLimit),
   });
-});
+}));
 
-app.post("/api/rooms/:roomId/messages", requireAuth, async (req, res) => {
+app.post("/api/rooms/:roomId/messages", requireAuth, asyncHandler(async (req, res) => {
   const room = await getRoomBySlug(req.params.roomId, req.user._id);
 
   if (!room) {
@@ -554,9 +557,9 @@ app.post("/api/rooms/:roomId/messages", requireAuth, async (req, res) => {
   await emitRoomsUpdate(room.participants.map((participant) => participant._id?.toString?.() ?? participant.toString()));
 
   return res.status(201).json({ message });
-});
+}));
 
-app.post("/api/rooms/:roomId/messages/:messageId/reactions", requireAuth, async (req, res) => {
+app.post("/api/rooms/:roomId/messages/:messageId/reactions", requireAuth, asyncHandler(async (req, res) => {
   const room = await getRoomBySlug(req.params.roomId, req.user._id);
 
   if (!room) {
@@ -582,7 +585,7 @@ app.post("/api/rooms/:roomId/messages/:messageId/reactions", requireAuth, async 
   io.to(room.slug).emit("message:updated", updatedMessage);
 
   return res.json({ message: updatedMessage });
-});
+}));
 
 app.post("/api/upload", requireAuth, (req, res, next) => {
   upload.single("file")(req, res, (error) => {
@@ -985,7 +988,7 @@ function listen(server, port) {
 
     server.once("error", handleError);
     server.once("listening", handleListening);
-    server.listen(port);
+    server.listen(port, "0.0.0.0");
   });
 }
 

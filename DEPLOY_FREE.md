@@ -22,7 +22,7 @@ What it does:
 - leaves the frontend on Vercel
 - disables SMTP so signup uses the built-in dev OTP instead of paid email
 
-## Required Secret
+## Render Backend Setup
 
 After creating the Blueprint, set these backend values in Render:
 
@@ -30,13 +30,35 @@ After creating the Blueprint, set these backend values in Render:
 - `CLIENT_URLS`
 - `MONGODB_URI`
 
-Set `CLIENT_URL` and `CLIENT_URLS` to your Vercel frontend URL.
+Set `CLIENT_URL` and `CLIENT_URLS` to your Vercel frontend URL so the backend allows requests from your deployed frontend.
 
 Recommended Atlas format:
 
 ```env
 mongodb+srv://USERNAME:PASSWORD@cluster0.example.mongodb.net/pulsechat?retryWrites=true&w=majority&appName=Cluster0
 ```
+
+Example Render backend values:
+
+```env
+CLIENT_URL=https://your-vercel-app.vercel.app
+CLIENT_URLS=https://your-vercel-app.vercel.app,https://your-custom-domain.com
+SMTP_ENABLED=false
+EXPOSE_DEV_OTP=true
+MONGODB_DNS_SERVERS=8.8.8.8,1.1.1.1
+MONGODB_URI=mongodb+srv://USERNAME:PASSWORD@cluster0.example.mongodb.net/pulsechat?retryWrites=true&w=majority&appName=Cluster0
+```
+
+## Vercel Frontend Setup
+
+In Vercel, set the frontend environment variables before deploying:
+
+```env
+VITE_BACKEND_RUNTIME=node
+VITE_API_URL=https://your-render-service.onrender.com
+```
+
+This makes the deployed frontend call the Render backend instead of `localhost`.
 
 ## Important Free-Tier Notes
 
@@ -51,9 +73,14 @@ If Blueprint variable linking fails in your workspace, set these values manually
 
 Backend:
 
-- `CLIENT_URL=https://your-frontend-name.onrender.com`
-- `CLIENT_URLS=https://your-vercel-app.vercel.app`
+- `CLIENT_URL=https://your-vercel-app.vercel.app`
+- `CLIENT_URLS=https://your-vercel-app.vercel.app,https://your-custom-domain.com`
 - `SMTP_ENABLED=false`
 - `EXPOSE_DEV_OTP=true`
 - `MONGODB_DNS_SERVERS=8.8.8.8,1.1.1.1`
 - `MONGODB_URI=...`
+
+Frontend:
+
+- `VITE_BACKEND_RUNTIME=node`
+- `VITE_API_URL=https://your-render-service.onrender.com`

@@ -1,5 +1,10 @@
 import { getApiBaseUrl, getApiCandidates, setApiBaseUrl } from "../lib/socket";
 
+function isLikelyFrontendHtmlResponse(response) {
+  const contentType = String(response.headers.get("content-type") ?? "").toLowerCase();
+  return !response.ok && contentType.includes("text/html");
+}
+
 async function request(path, { token, headers, ...options } = {}) {
   const requestOptions = {
     ...options,
@@ -15,19 +20,31 @@ async function request(path, { token, headers, ...options } = {}) {
   ];
 
   let response;
-  let lastNetworkError;
 
   for (const candidate of candidates) {
     try {
-      response = await fetch(`${candidate}${path}`, requestOptions);
+      const nextResponse = await fetch(`${candidate}${path}`, requestOptions);
+
+      if (isLikelyFrontendHtmlResponse(nextResponse) && candidate !== candidates[candidates.length - 1]) {
+        continue;
+      }
+
+      response = nextResponse;
       setApiBaseUrl(candidate);
       break;
-    } catch (error) {
-      lastNetworkError = error;
+    } catch {
     }
   }
 
   if (!response) {
+    if (
+      typeof window !== "undefined" &&
+      !["localhost", "127.0.0.1"].includes(window.location.hostname) &&
+      candidates.some((candidate) => /^https?:\/\/(?:localhost|127\.0\.0\.1|0\.0\.0\.0)(?::\d+)?$/i.test(candidate))
+    ) {
+      throw new Error("This frontend is still pointing at a localhost backend. Set VITE_API_URL to your deployed backend URL.");
+    }
+
     throw new Error(
       `Cannot reach the backend. Tried: ${candidates.join(", ")}. Check that the backend is running.`
     );

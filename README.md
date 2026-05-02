@@ -198,6 +198,34 @@ npm run dev:cpp
 
 The frontend runs on `http://localhost:5173`.
 
+## Vercel + Render Deployment
+
+For the recommended hosted setup:
+
+- Deploy `frontend/` to Vercel
+- Deploy `backend/` to Render using [render.yaml](render.yaml)
+- Use MongoDB Atlas for the Node backend database
+
+Set these Vercel frontend environment variables:
+
+```bash
+VITE_BACKEND_RUNTIME=node
+VITE_API_URL=https://your-render-service.onrender.com
+```
+
+Set these Render backend environment variables:
+
+```bash
+CLIENT_URL=https://your-vercel-app.vercel.app
+CLIENT_URLS=https://your-vercel-app.vercel.app,https://your-custom-domain.com
+MONGODB_URI=mongodb+srv://USERNAME:PASSWORD@cluster0.example.mongodb.net/pulsechat?retryWrites=true&w=majority&appName=Cluster0
+SMTP_ENABLED=false
+EXPOSE_DEV_OTP=true
+MONGODB_DNS_SERVERS=8.8.8.8,1.1.1.1
+```
+
+Use [DEPLOY_FREE.md](DEPLOY_FREE.md) for the full free-tier deployment notes.
+
 ### 4. Create an account
 
 - Open the frontend

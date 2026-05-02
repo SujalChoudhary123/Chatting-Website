@@ -3,9 +3,58 @@ import { backendRuntime } from "./backendRuntime";
 
 const runtimeHost = typeof window !== "undefined" ? window.location.hostname : "localhost";
 const runtimeOrigin = typeof window !== "undefined" ? window.location.origin : "";
-const prefersLanBackend =
-  typeof window !== "undefined" && !["localhost", "127.0.0.1"].includes(runtimeHost);
-const configuredApiUrl = import.meta.env.VITE_API_URL;
+const configuredApiUrl = String(import.meta.env.VITE_API_URL ?? "").trim();
+
+function isLoopbackHost(hostname = "") {
+  return ["localhost", "127.0.0.1", "0.0.0.0"].includes(String(hostname).trim().toLowerCase());
+}
+
+function isPrivateNetworkHost(hostname = "") {
+  const normalizedHost = String(hostname).trim().toLowerCase();
+
+  if (normalizedHost.endsWith(".local")) {
+    return true;
+  }
+
+  const ipv4Match = normalizedHost.match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/);
+  if (!ipv4Match) {
+    return false;
+  }
+
+  const [firstOctet, secondOctet] = ipv4Match.slice(1, 3).map(Number);
+  return (
+    firstOctet === 10 ||
+    (firstOctet === 172 && secondOctet >= 16 && secondOctet <= 31) ||
+    (firstOctet === 192 && secondOctet === 168)
+  );
+}
+
+function isSameOriginUrl(candidateUrl, origin) {
+  if (!candidateUrl || !origin) {
+    return false;
+  }
+
+  try {
+    return new URL(candidateUrl, origin).origin === origin;
+  } catch {
+    return false;
+  }
+}
+
+function isLoopbackUrl(candidateUrl) {
+  if (!candidateUrl) {
+    return false;
+  }
+
+  try {
+    return isLoopbackHost(new URL(candidateUrl).hostname);
+  } catch {
+    return false;
+  }
+}
+
+const runtimeIsLoopback = isLoopbackHost(runtimeHost);
+const prefersLanBackend = typeof window !== "undefined" && isPrivateNetworkHost(runtimeHost);
 const defaultApiUrlByRuntime = {
   node: `http://${runtimeHost}:4000`,
   java: `http://${runtimeHost}:8080`,
@@ -20,10 +69,21 @@ const fallbackApiUrls = [
   `http://${runtimeHost}:8091`,
   "http://localhost:8091",
 ];
+
+const runtimeOriginCanProxyApi =
+  Boolean(runtimeOrigin) && (runtimeIsLoopback || isSameOriginUrl(configuredApiUrl, runtimeOrigin));
+const primaryApiUrl = runtimeOriginCanProxyApi
+  ? runtimeOrigin
+  : configuredApiUrl && !isLoopbackUrl(configuredApiUrl)
+    ? configuredApiUrl
+    : prefersLanBackend
+      ? defaultApiUrlByRuntime[backendRuntime]
+      : configuredApiUrl || runtimeOrigin;
+
 const apiCandidates = Array.from(
   new Set([
-    runtimeOrigin,
-    prefersLanBackend ? defaultApiUrlByRuntime[backendRuntime] : configuredApiUrl,
+    primaryApiUrl,
+    runtimeOriginCanProxyApi ? configuredApiUrl : runtimeOrigin,
     configuredApiUrl,
     ...fallbackApiUrls,
   ].filter(Boolean))
