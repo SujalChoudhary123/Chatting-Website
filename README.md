@@ -87,7 +87,14 @@ Required backend env values in [backend/src/.env](backend/src/.env):
 MONGODB_URI=mongodb://127.0.0.1:27017/pulsechat
 JWT_SECRET=change-this-in-production
 CLIENT_URL=http://localhost:5173
+BREVO_API_KEY=xkeysib-your-brevo-api-key
+BREVO_API_URL=https://api.brevo.com/v3/smtp/email
+OTP_FROM_NAME=PulseChat
+OTP_FROM_EMAIL=your-verified-sender@gmail.com
+SMTP_ENABLED=false
 ```
+
+If you want real OTP emails, verify your sender in Brevo and set the Brevo API values above. If `BREVO_API_KEY` is empty, the backend falls back to the dev OTP flow.
 
 Run it with:
 
@@ -219,6 +226,10 @@ Set these Render backend environment variables:
 CLIENT_URL=https://your-vercel-app.vercel.app
 CLIENT_URLS=https://your-vercel-app.vercel.app,https://your-custom-domain.com
 MONGODB_URI=mongodb+srv://USERNAME:PASSWORD@cluster0.example.mongodb.net/pulsechat?retryWrites=true&w=majority&appName=Cluster0
+BREVO_API_KEY=xkeysib-your-brevo-api-key
+BREVO_API_URL=https://api.brevo.com/v3/smtp/email
+OTP_FROM_NAME=PulseChat
+OTP_FROM_EMAIL=your-verified-sender@gmail.com
 SMTP_ENABLED=false
 EXPOSE_DEV_OTP=true
 MONGODB_DNS_SERVERS=8.8.8.8,1.1.1.1

@@ -10,7 +10,11 @@ function hashOtp(otp) {
   return crypto.createHash("sha256").update(otp).digest("hex");
 }
 
-function isEmailProviderConfigured() {
+function isBrevoConfigured() {
+  return Boolean(config.brevoApiKey && config.brevoApiUrl && config.otpFromEmail);
+}
+
+function isSmtpConfigured() {
   return Boolean(
     config.smtpEnabled &&
       config.smtpHost &&
@@ -19,6 +23,69 @@ function isEmailProviderConfigured() {
       config.smtpPass &&
       config.otpFromEmail
   );
+}
+
+async function sendBrevoOtp({ email, otp }) {
+  const response = await fetch(config.brevoApiUrl, {
+    method: "POST",
+    headers: {
+      accept: "application/json",
+      "api-key": config.brevoApiKey,
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({
+      sender: {
+        name: config.otpFromName,
+        email: config.otpFromEmail,
+      },
+      to: [
+        {
+          email,
+        },
+      ],
+      subject: "Your PulseChat verification code",
+      htmlContent: `
+        <div style="font-family: Arial, sans-serif; color: #111827;">
+          <h2 style="margin-bottom: 12px;">PulseChat verification</h2>
+          <p style="margin-bottom: 12px;">Use this code to continue signing in:</p>
+          <div style="font-size: 32px; font-weight: 700; letter-spacing: 8px; margin: 18px 0;">
+            ${otp}
+          </div>
+          <p style="margin-top: 12px;">This code expires in ${config.otpTtlMinutes} minutes.</p>
+        </div>
+      `,
+    }),
+  });
+
+  if (response.ok) {
+    return;
+  }
+
+  let errorMessage = `Brevo API request failed with status ${response.status}.`;
+
+  try {
+    const payload = await response.json();
+    const details =
+      payload?.message ??
+      payload?.code ??
+      payload?.errors?.[0]?.message ??
+      payload?.errors?.[0]?.code;
+
+    if (details) {
+      errorMessage = `Brevo API request failed: ${details}`;
+    }
+  } catch {
+    try {
+      const text = await response.text();
+      if (text) {
+        errorMessage = `Brevo API request failed: ${text}`;
+      }
+    } catch {
+      // Keep the default error message.
+    }
+  }
+
+  throw new Error(errorMessage);
 }
 
 async function sendEmailOtp({ email, otp }) {
@@ -58,7 +125,17 @@ export async function sendOtp({ email, user }) {
   user.otpRequestedAt = new Date();
   await user.save();
 
-  if (isEmailProviderConfigured()) {
+  if (isBrevoConfigured()) {
+    await sendBrevoOtp({ email, otp });
+
+    return {
+      message: `Verification code sent to ${email}.`,
+      devOtp: null,
+      provider: "brevo",
+    };
+  }
+
+  if (isSmtpConfigured()) {
     await sendEmailOtp({ email, otp });
 
     return {
@@ -93,5 +170,13 @@ export async function verifyOtpCode({ otp, user }) {
 }
 
 export function getOtpMode() {
-  return isEmailProviderConfigured() ? "nodemailer" : "local";
+  if (isBrevoConfigured()) {
+    return "brevo";
+  }
+
+  if (isSmtpConfigured()) {
+    return "nodemailer";
+  }
+
+  return "local";
 }

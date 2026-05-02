@@ -29,6 +29,7 @@ After creating the Blueprint, set these backend values in Render:
 - `CLIENT_URL`
 - `CLIENT_URLS`
 - `MONGODB_URI`
+- `BREVO_API_KEY` if you want real OTP emails on free Render
 
 Set `CLIENT_URL` and `CLIENT_URLS` to your Vercel frontend URL so the backend allows requests from your deployed frontend.
 
@@ -43,6 +44,10 @@ Example Render backend values:
 ```env
 CLIENT_URL=https://your-vercel-app.vercel.app
 CLIENT_URLS=https://your-vercel-app.vercel.app,https://your-custom-domain.com,https://your-vercel-preview-*.vercel.app
+BREVO_API_KEY=xkeysib-your-brevo-api-key
+BREVO_API_URL=https://api.brevo.com/v3/smtp/email
+OTP_FROM_NAME=PulseChat
+OTP_FROM_EMAIL=your-verified-sender@gmail.com
 SMTP_ENABLED=false
 EXPOSE_DEV_OTP=true
 MONGODB_DNS_SERVERS=8.8.8.8,1.1.1.1
@@ -60,6 +65,17 @@ VITE_API_URL=https://your-render-service.onrender.com
 
 This makes the deployed frontend call the Render backend instead of `localhost`.
 
+## Real OTP Email On Free Render
+
+Free Render web services block SMTP ports, so Gmail SMTP will not work there.
+Use Brevo's HTTPS API instead:
+
+1. Create a free Brevo account
+2. Verify a sender email or domain in Brevo
+3. Create a Brevo API key
+4. Set `BREVO_API_KEY`, `OTP_FROM_NAME`, and `OTP_FROM_EMAIL` in Render
+5. Keep `SMTP_ENABLED=false`
+
 ## Important Free-Tier Notes
 
 - Render free web services spin down after inactivity.
@@ -75,6 +91,10 @@ Backend:
 
 - `CLIENT_URL=https://your-vercel-app.vercel.app`
 - `CLIENT_URLS=https://your-vercel-app.vercel.app,https://your-custom-domain.com,https://your-vercel-preview-*.vercel.app`
+- `BREVO_API_KEY=xkeysib-your-brevo-api-key`
+- `BREVO_API_URL=https://api.brevo.com/v3/smtp/email`
+- `OTP_FROM_NAME=PulseChat`
+- `OTP_FROM_EMAIL=your-verified-sender@gmail.com`
 - `SMTP_ENABLED=false`
 - `EXPOSE_DEV_OTP=true`
 - `MONGODB_DNS_SERVERS=8.8.8.8,1.1.1.1`
